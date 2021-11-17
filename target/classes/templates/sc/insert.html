@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>InsertSc</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='sc')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <form class="pt-3" th:action="@{/insertSc}" method="post">
+                <div class="form-group">
+                    <label>学生</label>
+                    <select name="studentId" class="form-control" aria-label="Default select example">
+                        <option th:text="${firstStudent.getStudentId()}+' '+${firstStudent.getStudentName()}"
+                        th:value="${firstStudent.getStudentId()}"></option>
+                        <option th:each="student:${studentList}" th:text="${student.getStudentId()}+' '+${student.getStudentName()}"
+                                th:value="${student.getStudentId()}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>课程</label>
+                    <select name="courseId" class="form-control" aria-label="Default select example">
+                        <option th:text="${firstCourse.getCourseId()}+' '+${firstCourse.getCourseName()}"
+                                th:value="${firstCourse.getCourseId()}"></option>
+                        <option th:each="course:${courseList}" th:text="${course.getCourseId()}+' '+${course.getCourseName()}"
+                                th:value="${course.getCourseId()}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>成绩</label>
+                    <input th:value="${InputGrade}" type="number" name="grade" class="form-control"
+                           placeholder="Enter Grade" required>
+                </div>
+                <p th:text="${errorMsg}" style="color: red"></p>
+                <button type="submit" class="btn btn-primary">添加</button>
+                <a class="btn btn-secondary" th:href="@{/scList}">返回</a>
+            </form>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

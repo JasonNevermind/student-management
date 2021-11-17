@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StudentMapper">
+
+    <resultMap type="Student" id="StudentResult">
+        <result property="studentId" column="stu_id"/>
+        <result property="studentName" column="stu_name"/>
+        <result property="studentGender" column="stu_gender"/>
+        <result property="studentAge" column="stu_age"/>
+        <result property="className" column="class_name"/>
+    </resultMap>
+
+    <resultMap type="StudentInfo" id="StudentInfoResult">
+        <result property="studentId" column="stu_id"/>
+        <result property="studentName" column="stu_name"/>
+        <result property="className" column="class_name"/>
+        <result property="majorName" column="major_name"/>
+        <result property="departName" column="depart_name"/>
+    </resultMap>
+
+    <!--    <select id="getStudentInfoView" resultMap="StudentInfoResult">-->
+    <!--        select stu_id, stu_name, class.class_name, major.major_name, depart.depart_name-->
+    <!--        from student,-->
+    <!--             class,-->
+    <!--             major,-->
+    <!--             depart-->
+    <!--        where student.class_name = class.class_name-->
+    <!--          and class.major_name = major.major_name-->
+    <!--          and major.depart_name = depart.depart_name-->
+    <!--    </select>-->
+    <!--创建视图查询各个学生的学号、姓名、班级、专业、院系-->
+    <select id="getStudentInfoView" resultMap="StudentInfoResult">
+        select *
+        from stu_info
+    </select>
+
+    <select id="selectStudentList" resultMap="StudentResult">
+        select stu_id, stu_name, stu_gender, stu_age, class_name
+        from student
+    </select>
+
+    <select id="selectStudentById" resultMap="StudentResult" parameterType="String">
+        select stu_id, stu_name, stu_gender, stu_age, class_name
+        from student
+        where stu_id = #{id}
+    </select>
+
+    <insert id="insertStudent" parameterType="Student">
+        insert into student(stu_id, stu_name, stu_gender, stu_age, class_name)
+        VALUES (#{studentId}, #{studentName}, #{studentGender}, #{studentAge}, #{className})
+    </insert>
+
+    <update id="updateStudent" parameterType="java.util.HashMap">
+        update student
+        set stu_id=#{newStudentId},
+            stu_name=#{newStudentName},
+            stu_gender=#{newStudentGender},
+            stu_age=#{newStudentAge},
+            class_name=#{newClassName}
+        where stu_id = #{oldStudentId}
+    </update>
+
+    <delete id="deleteStudentById" parameterType="String">
+        delete
+        from student
+        where stu_id = #{id}
+    </delete>
+
+    <!--获得所有学生的学号-->
+    <select id="selectAllStudentId" resultType="String">
+        select stu_id
+        from student
+    </select>
+</mapper>

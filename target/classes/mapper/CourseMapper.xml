@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CourseMapper">
+
+    <resultMap type="Course" id="CourseResult">
+        <result property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <result property="credit" column="credit"/>
+    </resultMap>
+
+    <select id="selectCourseList" resultMap="CourseResult">
+        select course_id, course_name, credit
+        from course
+    </select>
+
+    <select id="selectCourseById" resultMap="CourseResult" parameterType="String">
+        select course_id, course_name, credit
+        from course
+        where course_id = #{id}
+    </select>
+
+    <insert id="insertCourse" parameterType="Course">
+        insert into course(course_id, course_name, credit)
+        VALUES (#{courseId}, #{courseName}, #{credit})
+    </insert>
+
+    <update id="updateCourse" parameterType="java.util.Map">
+        update course
+        set course_id=#{newCourseId},
+            course_name=#{newCourseName},
+            credit=#{newCourseCredit}
+        where course_id = #{oldCourseId}
+    </update>
+
+    <delete id="deleteCourseById" parameterType="String">
+        delete
+        from course
+        where course_id = #{id}
+    </delete>
+
+    <select id="selectAllCourseId" resultType="String">
+        select course_id
+        from course
+    </select>
+</mapper>

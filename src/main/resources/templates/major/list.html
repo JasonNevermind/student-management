@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MajorList</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='major')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="align-items-center pt-3 border-bottom">
+                <p>
+                    <a th:href="@{/toInsertMajor}" class="btn btn-sm btn-success"
+                       sec:authorize="hasRole('admin')">添加专业</a>
+                    <a th:href="@{/exportMajor}" class="btn btn-sm btn-success">导出专业</a>
+                    <a th:href="@{/importMajor}" class="btn btn-sm btn-success"
+                       sec:authorize="hasRole('admin')">导入专业</a>
+                </p>
+                <p th:text="${errorMsg}" style="color: red"></p>
+                <p th:text="${successMsg}" style="color: green"></p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>专业名</th>
+                        <th>院系名</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="major,state:${majorList}">
+                        <td th:text="${state.index+1}"></td>
+                        <td th:text="${major.getMajorName()}"></td>
+                        <td th:text="${major.getDepartName()}"></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary"
+                               th:href="@{/toUpdateMajor/}+${major.getMajorName()}"
+                               sec:authorize="hasRole('admin')">修改</a>
+                            <a class="btn btn-sm btn-danger" th:href="@{/deleteMajor/}+${major.getMajorName()}"
+                               sec:authorize="hasRole('admin')">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

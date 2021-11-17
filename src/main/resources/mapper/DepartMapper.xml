@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DepartMapper">
+
+    <!--查询所有院系名-->
+    <select id="selectAllDepartName" resultType="String">
+        select depart_name
+        from depart
+    </select>
+
+    <!--添加院系-->
+    <insert id="insertDepart" parameterType="String">
+        insert into depart(depart_name)
+        values (#{departName})
+    </insert>
+
+    <!--修改院系-->
+    <update id="updateDepart" parameterType="java.util.Map">
+        update depart
+        set depart_name=#{newDepartName}
+        where depart_name = #{oldDepartName}
+    </update>
+
+    <!--根据院系名删除院系-->
+    <delete id="deleteDepartByName" parameterType="String">
+        delete
+        from depart
+        where depart_name = #{departName}
+    </delete>
+</mapper>

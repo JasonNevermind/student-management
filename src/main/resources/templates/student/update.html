@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>UpdateStudent</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='student')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <form class="pt-3" th:action="@{/updateStudent}" method="post">
+                <div class="form-group">
+                    <label>学号</label>
+                    <input th:value="${oldStudentId}" type="text" name="studentId" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input th:value="${oldStudentName}" type="text" name="studentName" class="form-control"
+                           placeholder="Enter StudentName" required>
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <select name="studentGender" class="form-control" aria-label="Default select example">
+                        <option th:value="${oldStudentGender}" th:text="${oldStudentGender}"></option>
+                        <option th:each="gender:${genderList}" th:value="${gender}" th:text="${gender}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>年龄</label>
+                    <input th:value="${oldStudentAge}" type="number" name="studentAge" class="form-control"
+                           placeholder="Enter StudentAge" required>
+                </div>
+                <div class="form-group">
+                    <label>班级名</label>
+                    <select name="className" class="form-control" aria-label="Default select example">
+                        <!--把该学生所在的班级出现在第一个位置-->
+                        <option th:text="${selectClassName}" th:value="${selectClassName}"></option>
+                        <option th:each="className:${allClassName}" th:text="${className}"
+                                th:value="${className}"></option>
+                    </select>
+                </div>
+                <p th:text="${errorMsg}" style="color: red"></p>
+                <button type="submit" class="btn btn-primary">修改</button>
+                <a class="btn btn-secondary" th:href="@{/studentList}">返回</a>
+            </form>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

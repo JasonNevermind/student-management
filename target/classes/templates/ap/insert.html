@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>InsertAp</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='ap')}"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <form class="pt-3" th:action="@{/insertAp}" method="post">
+                <div class="form-group">
+                    <label>学生</label>
+                    <select name="studentId" class="form-control" aria-label="Default select example">
+                        <option th:text="${firstStudent.getStudentId()}+' '+${firstStudent.getStudentName()}"
+                                th:value="${firstStudent.getStudentId()}"></option>
+                        <option th:each="student:${studentList}"
+                                th:text="${student.getStudentId()}+' '+${student.getStudentName()}"
+                                th:value="${student.getStudentId()}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>时间</label>
+                    <!--提交的时间格式为2021-11-15-->
+                    <input th:value="${now}" type="date" name="apTime" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>类型</label>
+                    <select name="apType" class="form-control" aria-label="Default select example">
+                        <option th:value="${defaultApType}" th:text="${defaultApType}"></option>
+                        <option th:each="type:${apType}" th:text="${type}" th:value="${type}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>说明</label>
+                    <input th:value="${desc}" type="text" name="apDesc" class="form-control"
+                           placeholder="Enter ApDesc" required>
+                </div>
+                <p th:text="${errorMsg}" style="color: red"></p>
+                <button type="submit" class="btn btn-primary">添加</button>
+                <a class="btn btn-secondary" th:href="@{/apList}">返回</a>
+            </form>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

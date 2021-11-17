@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CourseList</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='course')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="align-items-center pt-3 border-bottom">
+                <p>
+                    <a th:href="@{/toInsertCourse}" class="btn btn-sm btn-success"
+                       sec:authorize="hasRole('admin')">添加课程</a>
+                    <a th:href="@{/exportCourse}" class="btn btn-sm btn-success">导出课程</a>
+                    <a th:href="@{/importCourse}" class="btn btn-sm btn-success"
+                       sec:authorize="hasRole('admin')">导入课程</a>
+                </p>
+                <p th:text="${errorMsg}" style="color: red"></p>
+                <p th:text="${successMsg}" style="color: green"></p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>课程号</th>
+                        <th>课程名称</th>
+                        <th>学分</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="course,state:${courseList}">
+                        <td th:text="${state.index+1}"></td>
+                        <td th:text="${course.getCourseId()}"></td>
+                        <td th:text="${course.getCourseName()}"></td>
+                        <td th:text="${course.getCredit()}"></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary"
+                               th:href="@{/toUpdateCourse/}+${course.getCourseId()}"
+                               sec:authorize="hasRole('admin')">修改</a>
+                            <a class="btn btn-sm btn-danger" th:href="@{/deleteCourse/}+${course.getCourseId()}"
+                               sec:authorize="hasRole('admin')">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

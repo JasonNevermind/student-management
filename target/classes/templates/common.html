@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<!--顶部导航栏-->
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" th:fragment="topbar">
+    <span class="navbar-brand col-md-3 col-lg-2 mr-0 px-3">学生信息管理系统</span>
+    <ul class="navbar-nav px-3">
+        <!--未登录：登录-->
+        <li sec:authorize="!isAuthenticated()" class="text-nowrap">
+            <a class="nav-link" th:href="@{/login}">登录</a>
+        </li>
+        <!--已登录：用户名，注销-->
+        <li sec:authorize="isAuthenticated()" class="text-nowrap">
+            <span sec:authentication="name"
+                  style="display: block; padding: 0.5rem 1rem; color: #9a9da0"></span>
+        </li>
+        <li sec:authorize="isAuthenticated()" class="text-nowrap">
+            <a class="nav-link" th:href="@{/logout}">注销</a>
+        </li>
+    </ul>
+</nav>
+
+<!--侧边栏-->
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" th:fragment="sidebar">
+    <div class="sidebar-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a th:class="${active=='index'?'nav-link active':'nav-link'}" th:href="@{/index}">
+                    首页 <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='depart'?'nav-link active':'nav-link'}" th:href="@{/departList}">
+                    院系管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='major'?'nav-link active':'nav-link'}" th:href="@{/majorList}">
+                    专业管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='class'?'nav-link active':'nav-link'}" th:href="@{/classList}">
+                    班级管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='student'?'nav-link active':'nav-link'}" th:href="@{/studentList}">
+                    学生管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='course'?'nav-link active':'nav-link'}" th:href="@{/courseList}">
+                    课程管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='sc'?'nav-link active':'nav-link'}" th:href="@{/scList}">
+                    选课管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='ap'?'nav-link active':'nav-link'}" th:href="@{/apList}">
+                    奖惩管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='studentInfo'?'nav-link active':'nav-link'}" th:href="@{/studentInfoList}">
+                    学生信息列表
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:class="${active=='queryGrade'?'nav-link active':'nav-link'}" th:href="@{/toQueryGrade}">
+                    学生成绩查询
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+</html>

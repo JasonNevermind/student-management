@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>StudentInfoList</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='studentInfo')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="align-items-center pt-3">
+                <h1 class="h2">学生信息列表</h1>
+            </div>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>班级</th>
+                        <th>专业</th>
+                        <th>院系</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="student,state:${studentInfoList}">
+                        <td th:text="${state.index+1}"></td>
+                        <td th:text="${student.getStudentId()}"></td>
+                        <td th:text="${student.getStudentName()}"></td>
+                        <td th:text="${student.getClassName()}"></td>
+                        <td th:text="${student.getMajorName()}"></td>
+                        <td th:text="${student.getDepartName()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

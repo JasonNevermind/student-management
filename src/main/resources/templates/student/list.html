@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>StudentList</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='student')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="align-items-center pt-3 border-bottom">
+                <p><a th:href="@{/toInsertStudent}" class="btn btn-sm btn-success"
+                      sec:authorize="hasRole('admin')">添加学生</a>
+                    <a th:href="@{/exportStudent}" class="btn btn-sm btn-success">导出学生</a>
+                    <a th:href="@{/importStudent}" class="btn btn-sm btn-success"
+                       sec:authorize="hasRole('admin')">导入学生</a>
+                </p>
+                <p th:text="${errorMsg}" style="color: red"></p>
+                <p th:text="${successMsg}" style="color: green"></p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>班级名</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="student,state:${studentList}">
+                        <td th:text="${state.index+1}"></td>
+                        <td th:text="${student.getStudentId()}"></td>
+                        <td th:text="${student.getStudentName()}"></td>
+                        <td th:text="${student.getStudentGender()}"></td>
+                        <td th:text="${student.getStudentAge()}"></td>
+                        <td th:text="${student.getClassName()}"></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary"
+                               th:href="@{/toUpdateStudent/}+${student.getStudentId()}"
+                               sec:authorize="hasRole('admin')">修改</a>
+                            <a class="btn btn-sm btn-danger" th:href="@{/deleteStudent/}+${student.getStudentId()}"
+                               sec:authorize="hasRole('admin')">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

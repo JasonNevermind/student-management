@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ScMapper">
+
+    <resultMap type="Sc" id="ScResult">
+        <result property="studentId" column="stu_id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="grade" column="grade"/>
+    </resultMap>
+
+    <resultMap type="ScInfo" id="ScInfoResult">
+        <result property="studentId" column="stu_id"/>
+        <result property="studentName" column="stu_name"/>
+        <result property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <result property="credit" column="credit"/>
+        <result property="grade" column="grade"/>
+    </resultMap>
+
+    <!--根据学号查询选课信息，成绩查询使用-->
+<!--    <select id="selectScInfoById" parameterType="String" resultMap="ScInfoResult">-->
+<!--        select sc.stu_id, stu_name, sc.course_id, course.course_name, credit, grade-->
+<!--        from sc,-->
+<!--             course,-->
+<!--             student-->
+<!--        where sc.stu_id = #{studentId}-->
+<!--          AND sc.stu_id = student.stu_id-->
+<!--          AND sc.course_id = course.course_id-->
+<!--    </select>-->
+    <!--调用存储过程查询指定学生的成绩单-->
+    <select id="selectScInfoById" parameterType="String" resultMap="ScInfoResult">
+        call stu_grade(#{studentId})
+    </select>
+
+    <!--选课列表-->
+    <select id="selectScList" resultMap="ScInfoResult">
+        select sc.stu_id, stu_name, sc.course_id, course.course_name, credit, grade
+        from sc,
+             course,
+             student
+        where sc.course_id = course.course_id
+          and sc.stu_id = student.stu_id
+    </select>
+
+    <!--根据学号查询课程号，查询学生选的课程-->
+    <select id="selectCourseIdById" parameterType="String" resultType="String">
+        select course_id
+        from sc
+        where stu_id = #{studentId}
+    </select>
+
+    <select id="selectScById" resultMap="ScResult" parameterType="String">
+        select stu_id, course_id, grade
+        from sc
+        where course_id = #{courseId}
+          and stu_id = #{studentId}
+    </select>
+
+    <insert id="insertSc" parameterType="Sc">
+        insert into sc(stu_id, course_id, grade)
+        VALUES (#{studentId}, #{courseId}, #{grade})
+    </insert>
+
+    <update id="updateSc" parameterType="java.util.Map">
+        update sc
+        set stu_id=#{newStudentId},
+            course_id=#{newCourseId},
+            grade=#{newGrade}
+        where stu_id = #{oldStudentId}
+          and course_id = #{oldCourseId}
+    </update>
+
+    <delete id="deleteScById" parameterType="String">
+        delete
+        from sc
+        where course_id = #{courseId}
+          and stu_id = #{studentId}
+    </delete>
+
+    <select id="selectAllStudentId" resultType="String">
+        select stu_id
+        from sc
+    </select>
+
+    <select id="selectAllCourseId" resultType="String">
+        select course_id
+        from sc
+    </select>
+</mapper>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ClassList</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='class')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="align-items-center pt-3 border-bottom">
+                <p>
+                    <a th:href="@{/toInsertClass}" class="btn btn-sm btn-success"
+                       sec:authorize="hasRole('admin')">添加班级</a>
+                    <a th:href="@{/exportClass}" class="btn btn-sm btn-success">导出班级</a>
+                    <a th:href="@{/importClass}" class="btn btn-sm btn-success"
+                       sec:authorize="hasRole('admin')">导入班级</a>
+                </p>
+                <p th:text="${errorMsg}" style="color: red"></p>
+                <p th:text="${successMsg}" style="color: green"></p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>班级名</th>
+                        <th>专业名</th>
+                        <th>班级人数</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="class,state:${classList}">
+                        <td th:text="${state.index+1}"></td>
+                        <td th:text="${class.getClassName()}"></td>
+                        <td th:text="${class.getMajorName()}"></td>
+                        <th th:text="${class.getClassNum()}"></th>
+                        <td>
+                            <a class="btn btn-sm btn-primary"
+                               th:href="@{/toUpdateClass/}+${class.getClassName()}"
+                               sec:authorize="hasRole('admin')">修改</a>
+                            <a class="btn btn-sm btn-danger" th:href="@{/deleteClass/}+${class.getClassName()}"
+                               sec:authorize="hasRole('admin')">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

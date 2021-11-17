@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ApMapper">
+
+    <resultMap type="Ap" id="ApResult">
+        <result property="apId" column="ap_id"/>
+        <result property="studentId" column="stu_id"/>
+        <result property="studentName" column="stu_name"/>
+        <result property="apTime" column="ap_time"/>
+        <result property="apType" column="ap_type"/>
+        <result property="apDesc" column="ap_desc"/>
+    </resultMap>
+
+    <!--查询所有奖惩信息-->
+    <select id="selectApList" resultMap="ApResult">
+        select ap_id, ap.stu_id, stu_name, ap_time, ap_type, ap_desc
+        from ap,
+             student
+        where ap.stu_id = student.stu_id
+    </select>
+
+    <!--查询奖惩信息的指定属性：学号、时间、类型、说明-->
+    <select id="selectApListForSome" resultMap="ApResult">
+        select stu_id, ap_time, ap_type, ap_desc
+        from ap
+    </select>
+
+    <!--添加奖惩信息-->
+    <insert id="insertAp" parameterType="Ap">
+        insert into Ap(stu_id, ap_time, ap_type, ap_desc)
+        VALUES (#{studentId}, #{apTime}, #{apType}, #{apDesc})
+    </insert>
+
+    <!--根据序号删除奖惩信息-->
+    <delete id="deleteApById" parameterType="int">
+        delete
+        from ap
+        where ap_id = #{apId}
+    </delete>
+
+    <!--获得所有奖惩信息的学生学号-->
+    <select id="selectAllApStudentId" resultType="String">
+        select stu_id
+        from ap
+    </select>
+</mapper>

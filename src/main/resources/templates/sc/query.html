@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GradeList</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="~{common::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!--侧边栏-->
+        <div th:replace="~{common::sidebar(active='queryGrade')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="align-items-center pt-3 border-bottom">
+                <form class="input-group col-md-3" th:action="@{/queryGrade}" method="post"
+                style="padding-left: 0">
+                    <input name="studentId" type="text" class="form-control"
+                           placeholder="请输入学号" required>
+                    <span class="input-group-sm">
+                        <button type="submit" class="btn btn-info btn-primary">查找</button>
+                    </span>
+                </form>
+                <p></p>
+                <p th:text="${errorMsg}" style="color: red"></p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>课程号</th>
+                        <th>课程名</th>
+                        <th>学分</th>
+                        <th>成绩</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="sc,state:${gradeList}">
+                        <td th:text="${sc.getStudentId()}"></td>
+                        <td th:text="${sc.getStudentName()}"></td>
+                        <td th:text="${sc.getCourseId()}"></td>
+                        <td th:text="${sc.getCourseName()}"></td>
+                        <td th:text="${sc.getCredit()}"></td>
+                        <td th:text="${sc.getGrade()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>
